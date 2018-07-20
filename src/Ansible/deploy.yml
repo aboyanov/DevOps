@@ -1,0 +1,149 @@
+---
+
+- hosts: localhost
+  vars:
+    env: "{{ env }}"
+  tasks:
+
+  - name: Upload Rundeck job definitions
+    uri:
+      url: https://{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=2') }}/rundeck/api/20/project/AAAM_Techarch/jobs/import?dupeOption=update
+      method: POST
+      body: "{{ item }}"
+      headers:
+        Content-Type: "application/xml"
+        X-Rundeck-Auth-Token: "{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=4') }}"
+      status_code: 200
+    with_items: 
+    -  "{{ lookup('file','../../rundeck_definition/Extend_Service_End_Date.xml') }}" 
+    -  "{{ lookup('file','../../rundeck_definition/Upgrade_Splunk.xml') }}" 
+    -  "{{ lookup('file','../../rundeck_definition/Start_Stop_AWS_Instance.xml') }}"
+    -  "{{ lookup('file','../../rundeck_definition/Terminate_Instance_and_ELB.xml') }}" 
+    -  "{{ lookup('file','../../rundeck_definition/Terminate_Instances.xml') }}"
+    -  "{{ lookup('file','../../rundeck_definition/Migrate_Splunk_Instances.xml') }}"
+    -  "{{ lookup('file','../../rundeck_definition/Terminate_Migrated_Instances.xml') }}"
+    
+    # -  "{{ lookup('file','../../rundeck_definition/Bulk_Upgrade_TA.xml') }}" 
+  
+  - name: Archive Python script
+    archive:
+      path:
+        - ../../python_project
+      dest: scripts.gz
+      format: gz
+
+- hosts: "{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=5') }}"
+  become: True
+  tasks:
+    - name: Deploy Ansible script
+      copy:
+        src:  "{{ item.src }}"
+        dest: "{{ item.dest }}" 
+        owner: svc_chatbot.aaam
+        group: wheel
+        mode: 0664
+      with_items:
+      - { src: '../../ansible_script/upgrade_ansible_script/splunk_upgrade.yml', dest: "/opt/aaam_ansible/splunk_upgarde/" }
+      - { src: '../../ansible_script/upgrade_ansible_script/create_ami.yml', dest: "/opt/aaam_ansible/splunk_upgarde/" }
+      - { src: '../../ansible_script/puppet_ansible_script/update_hosts.yml', dest: "/opt/aaam_ansible/puppet/" }
+      - { src: '../../ansible_script/puppet_ansible_script/puppet_lookup.csv', dest: "/opt/aaam_ansible/puppet/" }
+      - { src: '../../ansible_script/puppet_ansible_script/install_puppet_agent.yml', dest: "/opt/aaam_ansible/puppet/" }
+
+- hosts: "{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=1') }}"
+  become: True
+  tasks:
+    - name: Deploy Rivescript
+      copy: 
+        src: "{{ item.src }}"
+        dest: /opt/docker/bot/rivescript/
+        owner: centos
+        group: centos
+      with_items:
+      - { src: '../../rivescript/aws_maintenance.rs'}
+      - { src: '../../rivescript/splunk_upgrade.rs'}
+      - { src: '../../rivescript/splunk_maintenance.rs'}
+      
+  
+    - name: Copy Python projects to chatbot
+      copy: 
+        src: scripts.gz
+        dest: /home/centos
+        owner: centos
+        group: centos
+
+    - name: Unarchive python project package
+      unarchive: 
+        remote_src: yes
+        src: /home/centos/scripts.gz
+        dest: /home/centos
+      
+    - name: Deploy python code into docker container
+      shell: docker cp /home/centos/python_project/{{ item.src }} rundeck:/opt/rundeck/projects/AAAM_Techarch/etc/scripts
+      args:
+        chdir: /home/centos 
+      with_items:
+      - { src: 'upgrade' }
+      # - { src: 'bulk_upgrade_ta' }
+      - { src: 'start_stop_splunk' }
+      - { src: 'terminate_instances' }
+      - { src: 'util_modules' }
+      - { src: 'start_stop_instance' }
+      - { src: 'extend_service' }
+      - { src: 'instance_migration' }
+      - { src: 'terminate_migrated_instances' }
+
+    
+    - name: Remove tmp Files
+      file: 
+        path: /home/centos/{{ item.src }}
+        state: absent
+      with_items:
+      - { src: 'script.gz' }
+      - { src: 'python_project' }
+     
+- hosts: localhost
+  tasks:
+  - block:
+    - name: Request Token for Swagger API
+      uri:
+        url: "https://{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=2') }}/gateway/auth/api/v1/auth/token"
+        method: POST
+        return_content: yes
+        headers:
+          Content-Type: application/json
+          Accept: application/json
+        body: '{"username": "admin", "password": "(p!E}6ZddLmG4:@6"}'
+        status_code: 200
+      register: token
+
+    - name: Reload Rivescript Definition
+      uri:
+        url: "{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=8') }}"
+        method: POST
+        headers: 
+          Content-Type: "application/json"
+          Accept: "*/*"
+          apiToken: "{{ token.json.token }}"
+        status_code: 200
+      register: reload_with_token
+      ignore_errors: yes 
+    
+    
+    - name: Reload Rivescript Definition
+      uri:
+        url: "{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=8') }}"
+        method: POST
+        headers: 
+          Content-Type: "application/json"
+          Accept: "*/*"
+        user: "admin"
+        password: "{{ lookup('csvfile', '{{env}} file=chatbot_lookup.csv delimiter=, col=7') }}"
+        status_code: 200
+      when: reload_with_token.failed
+      ignore_errors: true 
+          
+     
+    - name: Remove tmp Files
+      file: 
+        path: scripts.gz
+        state: absent

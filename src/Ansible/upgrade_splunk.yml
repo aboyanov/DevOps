@@ -1,0 +1,134 @@
+---
+ - hosts: "{{ inp_target_instance }}"
+   become: True
+   vars:
+    appsdir: /opt/splunk/etc/apps/
+    app: "{{appname_ded}}"
+
+   tasks:
+    - name: Clear the file /root/.bash_history
+      shell: "> /root/.bash_history"
+
+    - name: Disable Selinux
+      replace:
+       path: /etc/sysconfig/selinux
+       regexp: 'SELINUX=enabled'
+       replace: 'SELINUX=disabled'
+       backup: yes
+
+    - name: Download splunk 6.6.4
+      get_url:
+       url: 'url'
+       dest: /opt/
+
+    - name: change owner of splunk tar file
+      file:
+       path: /opt/splunk-6.6.4-00895e76d346-linux-2.6-x86_64.rpm
+       owner: splunk
+       group: splunk
+       mode: 0644
+
+    - name: Get running processes
+      shell: "ps -ef | grep -v grep | grep -w java | awk '{print $2}'"
+      register: running_processes
+
+    - name: Kill running processes
+      shell: "kill {{ item }}"
+      with_items: "{{ running_processes.stdout_lines }}"
+      ignore_errors: true
+
+    - name: Waiting until all running processes are killed
+      wait_for:
+       path: "/proc/{{ item }}/status"
+       state: absent
+       with_items: "{{ running_processes.stdout_lines }}"
+      ignore_errors: true
+
+
+    - name: stop splunk
+      shell: "/opt/splunk/bin/splunk stop"
+      become_user: splunk
+      ignore_errors: true
+
+    - name: copy the ml package
+      copy:
+         src: /opt/aaam_ansible/splunk_upgarde/splunk_binaries/aiam-ml-core.tar.gz
+         dest: /tmp/aiam-ml-core.tar.gz
+         owner: splunk
+         group: splunk
+         mode: 0666
+
+    - name: copy the twitter package
+      copy:
+         src: /opt/aaam_ansible/splunk_upgarde/splunk_binaries/aiam-common-visual-6_4.tar.gz
+         dest: /tmp/aiam-common-visual-6_4.tar.gz
+         owner: splunk
+         group: splunk
+         mode: 0666
+
+    - name: Extract aiam-ml-core.tar.gz
+      unarchive:
+         src: /opt/aaam_ansible/splunk_upgarde/splunk_binaries/aiam-ml-core.tar.gz
+         dest: /opt/splunk/etc/apps/
+
+    - name: Extract aiam-common-visual-6_4.tar.gz
+      unarchive:
+         src: /opt/aaam_ansible/splunk_upgarde/splunk_binaries/aiam-common-visual-6_4.tar.gz
+         dest: /opt/splunk/etc/apps/
+
+
+    - name: Install package.
+      yum:
+       name: /opt/splunk-6.6.4-00895e76d346-linux-2.6-x86_64.rpm
+       state: present
+      no_log: true
+
+    - name: Changing ownership to splunk user
+      file:
+       path: /opt/splunk
+       state: directory
+       owner: splunk
+       group: splunk
+       mode: 0755
+
+    - name: change ownership for splunk folder
+      file:
+       path: /tmp/auth
+       state: directory
+       owner: splunk
+       group: splunk
+       mode: 0755
+
+    - name: change permission for auth backup
+      file:
+       path: /tmp/auth/app_{{ansible_date_time.date}}{{ansible_date_time.time.replace(':',"")}}
+       state: directory
+       owner: splunk
+       group: splunk
+       mode: 0755
+
+    - name: move .orig files
+      shell: chdir=/opt/splunk/etc/auth mv *.orig /tmp/auth/app_{{ansible_date_time.date}}{{ansible_date_time.time.replace(':',"")}}
+      become_user: splunk
+      ignore_errors: true
+
+
+    - name: Accept license and start splunk
+      shell: /opt/splunk/bin/splunk start --accept-license --no-prompt --auto-ports --answer-yes
+      become_user: splunk
+      no_log: true
+      ignore_errors: true
+
+
+    - name: change permissions for  manifest
+      file:
+       path: /opt/splunk/splunk-6.4*
+       state: directory
+       mode: 0777
+      no_log: true
+      ignore_errors: true
+
+    - name: move old manifest files
+      shell: chdir=/opt/splunk mv splunk-6.4* /opt/
+      become_user: root
+      ignore_errors: true

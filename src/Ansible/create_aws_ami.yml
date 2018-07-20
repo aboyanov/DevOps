@@ -1,0 +1,20 @@
+---
+ - hosts: localhost
+   connection: local
+   gather_facts: False
+   vars:
+    aws_instance_id: "{{ aws_instance_id }}"
+    aws_region_code: "{{ aws_region_code }}"
+    aws_instance_ami_name: "{{ aws_instance_ami_name }}"
+
+   tasks:
+    - name: Creating AMI
+      ec2_ami:
+        aws_access_key: your_key
+        aws_secret_key: your_key
+        region: "{{ aws_region_code }}"
+        instance_id: "{{ aws_instance_id }}"
+        wait: yes
+        no_reboot: yes
+        name: "{{ aws_instance_ami_name }}"
+      register: image

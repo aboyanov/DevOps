@@ -1,0 +1,20 @@
+---
+- hosts: "{{inp_target_instance}}"
+  become: True
+
+  tasks:
+        - name: install the puppet agent rpm from a remote repo
+          yum:
+              name: http://yum.puppetlabs.com/puppet5/puppet-release-el-7.noarch.rpm
+              state: present
+        - name: install the puppet agent from the puppet repo
+          yum:
+              name: puppet-agent-5.3.3-1.el7
+              state: present
+        - name: Append puppet slave IP to puppet.conf
+          lineinfile:
+              dest=/etc/puppetlabs/puppet/puppet.conf
+              line="server={{ lookup('csvfile', '{{region}} file=puppet_lookup.csv delimiter=, col=1') }}"
+        - service:
+              name: puppet
+              state: restarted
