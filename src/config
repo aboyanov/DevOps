@@ -1,10 +1,12 @@
 # modify the two lines under Host * with your personal setting. e.g.:
 # e.g.: IdentityFile /home/me/key/theveryprivate.pem
-# e.g.: User aaam_joe.brown
+# e.g.: User john.doy
 
-Host * 
+Host *
+#Path to the private key
 IdentityFile ~/.ssh/alexandar.boyanov
-User aaam_alexandar.boyanov
+User alexandar.boyanov
+
 #Keep ssh connection alive
 ServerAliveInterval 60
 
@@ -13,19 +15,4 @@ ForwardAgent yes
 Port 443
 
 Host *.ap-southeast-2.compute.internal
-ProxyCommand ssh sydbstmg.aiam-dh.com -W %h:%p
-
-Host *.ec2.internal
-ProxyCommand ssh nvibstmg.aiam-dh.com -W %h:%p
-
-Host *.eu-central-1.compute.internal
-ProxyCommand ssh frabstmg.aiam-dh.com -W %h:%p
-
-Host *.ap-southeast-1.compute.internal
-ProxyCommand ssh sinbstmg.aiam-dh.com -W %h:%p
-
-Host *.ap-northeast-1.compute.internal
-ProxyCommand ssh tokbstmg.aiam-dh.com -W %h:%p
-
-Host *.eu-west-1.compute.internal
-ProxyCommand ssh irebstmg.aiam-dh.com -W %h:%p
+ProxyCommand ssh sytmg.aiam-dh.com -W %h:%p
