@@ -16,3 +16,4 @@ Port 443
 
 Host *.ap-southeast-2.compute.internal
 ProxyCommand ssh sytmg.aiam-dh.com -W %h:%p
+
