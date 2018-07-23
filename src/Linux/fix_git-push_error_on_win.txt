@@ -1,0 +1,8 @@
+Error with pushing to git repo from windows host
+Error: fatal: could not read Username for 'https://github.com': Invalid argument
+================================================================================
+
+Fix:
+1, go to your local git project directory, open ".git/config" file and delete the "[remote "origin"]" section.
+2, go to git bash and input "git remote add origin https://{username}:{password}@github.com/{username}/project.git"
+3, input git push to check if it works.
