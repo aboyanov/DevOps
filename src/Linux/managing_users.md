@@ -7,7 +7,8 @@ After you add the user account, you must set up access keys that allow the user 
 
 **Prerequisites**  
 Create a key pair for the user or use an existing key pair\.
-For example: ```ssh-keygen -t rsa -b 4096 -C "your_email@example.com"```
+For example:
+```ssh-keygen -t rsa -b 4096 -C "your_email@example.com"```
 
 **To add a user account**
 
