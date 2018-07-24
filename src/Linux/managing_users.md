@@ -58,7 +58,7 @@ Without these exact file permissions, the user will not be able to log in\.
 1. <a name="edit_auth_keys"></a>Open the `authorized_keys` file using your favorite text editor \(such as **vim** or **nano**\)\.
 
    ```
-   [newuser ~]$ nano .ssh/authorized_keys
+   [newuser ~]$ vim .ssh/authorized_keys
    ```
 
    Paste the public key for your key pair into the file and save the changes\. For example:
@@ -74,7 +74,7 @@ Without these exact file permissions, the user will not be able to log in\.
    The user should now be able to log into the `newuser` account on your instance using the private key that corresponds to the public key that you added to the `authorized_keys` file\.
 
 **To remove a user from the system**  
-If a user account is no longer needed, you can remove that account so that it may no longer be used\. When you specify the `-r` option, the user's home directory and mail spool are deleted\. To keep the user's home directory and mail spool, omit the `-r` option\.
+When you specify the `-r` option, the user's home directory and mail spool are deleted\. To keep the user's home directory and mail spool, omit the `-r` option\.
 
 ```
 [ec2-user ~]$ sudo userdel -r olduser
