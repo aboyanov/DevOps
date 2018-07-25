@@ -28,7 +28,7 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
    [ubuntu ~]$ sudo adduser alex --disabled-password
    ```
    
-1. You can optional set a password to a user like that:
+1. You can optionally set a password for a user like that:
    ```
    [ec2-user@ip-172-31-24-113 ~]$ sudo passwd alex
    Changing password for user alex.
