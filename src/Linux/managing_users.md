@@ -42,7 +42,7 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
    ```
    [ec2-user@ip-172-31-24-113 ~]$ sudo usermod -aG docker alex
    ```
-   2. Uncomment that entry in `visudo` file:
+   2. Uncomment that entry in `visudo` file /In the default visudo file it is around line #100/:
    ```
    [ec2-user@ip-172-31-24-113 ~]$ sudo visudo
    ```
