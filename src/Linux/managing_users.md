@@ -19,23 +19,31 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 1. Use the following adduser command to add the `newuser` account to the system \(with an entry in the `/etc/passwd` file\)\. This command also creates a group and a home directory for the account\.
 
    ```
-   [ec2-user ~]$ sudo adduser newuser
+   [ec2-user ~]$ sudo adduser alex
    ```
 
    \[Ubuntu\] When adding a user to an Ubuntu system, include the `--disabled-password` option with this command to avoid adding a password to the account\.
 
    ```
-   [ubuntu ~]$ sudo adduser newuser --disabled-password
+   [ubuntu ~]$ sudo adduser alex --disabled-password
+   ```
+   
+1. You can optional set a password to a user like that:
+   ```
+   [ec2-user@ip-172-31-24-113 ~]$ sudo passwd alex
+   Changing password for user alex.
+   New password:
+   Retype new password:
    ```
 
 1. Switch to the new account so that newly created files have the proper ownership\.
 
    ```
-   [ec2-user ~]$ sudo su - newuser
-   [newuser ~]$
+   [ec2-user ~]$ sudo su - alex
+   [alex ~]$
    ```
 
-   Notice that the prompt changes from `ec2-user` to `newuser` to indicate that you have switched the shell session to the new account\.
+   Notice that the prompt changes from `ec2-user` to `alex` to indicate that you have switched the shell session to the new account\.
 
 1. Create a `.ssh` directory in the `newuser` home directory and change its file permissions to `700` \(only the owner can read, write, or open the directory\)\.
 
