@@ -46,8 +46,8 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
    ```
    [ec2-user@ip-172-31-24-113 ~]$ sudo visudo
    ```
-   /In the default visudo file it is around line #100/<br/>
-   /You can jump directly to that line by typing: `/## Same thing`/
+   In the default visudo file it is around line #100<br/>
+   You can jump directly to that line by typing: `/## Same thing`
    ```
    ## Same thing without a password
    %wheel  ALL=(ALL)       NOPASSWD: ALL
