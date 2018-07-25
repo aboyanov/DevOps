@@ -42,10 +42,12 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
    ```
    [ec2-user@ip-172-31-24-113 ~]$ sudo usermod -aG docker alex
    ```
-   2. Uncomment that entry in `visudo` file /In the default visudo file it is around line #100/:
+   2. Uncomment that entry in `visudo` file:
    ```
    [ec2-user@ip-172-31-24-113 ~]$ sudo visudo
    ```
+   /In the default visudo file it is around line #100/
+   /You can jump directly to that line by typing: `/## Same thing`/
    ```
    ## Same thing without a password
    %wheel  ALL=(ALL)       NOPASSWD: ALL
