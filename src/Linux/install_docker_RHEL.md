@@ -1,6 +1,7 @@
-# Installing Docker on RHEL<a name="installing-docker"></a>
+# Installing Docker on AWS Linux 2 AMI<a name="installing-docker"></a>
 
-This simple guide is to show how to install docker on CentOs 7 and avoid errors due the installation
+This simple guide is to show how to install docker on CentOs 7 and avoid errors due the installation.
+I had this problem, when trying to install docker on AWS Linux 2 AMI.
 
 
 **Below I am listing steps to install docker-ce on RHEL.**
