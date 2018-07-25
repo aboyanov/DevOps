@@ -34,6 +34,7 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
    Changing password for user alex.
    New password:
    Retype new password:
+   passwd: all authentication tokens updated successfully.
    ```
 
 1. Switch to the new account so that newly created files have the proper ownership\.
@@ -48,8 +49,8 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 1. Create a `.ssh` directory in the `newuser` home directory and change its file permissions to `700` \(only the owner can read, write, or open the directory\)\.
 
    ```
-   [newuser ~]$ mkdir .ssh
-   [newuser ~]$ chmod 700 .ssh
+   [alex ~]$ mkdir .ssh
+   [alex ~]$ chmod 700 .ssh
    ```
 **Important**  
 Without these exact file permissions, the user will not be able to log in\.
@@ -57,8 +58,8 @@ Without these exact file permissions, the user will not be able to log in\.
 1. Create a file named `authorized_keys` in the `.ssh` directory and change its file permissions to `600` \(only the owner can read or write to the file\)\.
 
    ```
-   [newuser ~]$ touch .ssh/authorized_keys
-   [newuser ~]$ chmod 600 .ssh/authorized_keys
+   [alex ~]$ touch .ssh/authorized_keys
+   [alex ~]$ chmod 600 .ssh/authorized_keys
    ```
 **Important**  
 Without these exact file permissions, the user will not be able to log in\.
@@ -66,7 +67,7 @@ Without these exact file permissions, the user will not be able to log in\.
 1. <a name="edit_auth_keys"></a>Open the `authorized_keys` file using your favorite text editor \(such as **vim** or **nano**\)\.
 
    ```
-   [newuser ~]$ vim .ssh/authorized_keys
+   [alex ~]$ vim .ssh/authorized_keys
    ```
 
    Paste the public key for your key pair into the file and save the changes\. For example:
