@@ -66,7 +66,7 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 
    ```
    [alex ~]$ mkdir .ssh
-   [alex ~]$ chmod 700 .ssh
+   [alex ~]$ sudo chmod 700 .ssh
    ```
 **Important**  
 Without these exact file permissions, the user will not be able to log in\.
@@ -75,7 +75,7 @@ Without these exact file permissions, the user will not be able to log in\.
 
    ```
    [alex ~]$ touch .ssh/authorized_keys
-   [alex ~]$ chmod 600 .ssh/authorized_keys
+   [alex ~]$ sudo chmod 600 .ssh/authorized_keys
    ```
 **Important**  
 Without these exact file permissions, the user will not be able to log in\.
