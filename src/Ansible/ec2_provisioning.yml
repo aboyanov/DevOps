@@ -1,0 +1,10 @@
+---# Basic EC2 provisioning example
+- ec2:
+    key_name: mykey
+    instance_type: t2.micro
+    image: ami-123456
+    wait: yes
+    group: splunk
+    count: 1
+    vpc_subnet_id: "{{ subnet_id }}"
+    assign_public_ip: no
