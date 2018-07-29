@@ -40,7 +40,7 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 1. If you want to avoid a password for `sudo` commands:
    1. Add the user to `wheel` group:
    ```
-   [ec2-user@ip-172-31-24-113 ~]$ sudo usermod -aG docker alex
+   [ec2-user@ip-172-31-24-113 ~]$ sudo usermod -aG wheel alex
    ```
    2. Uncomment that entry in `visudo` file:
    ```
