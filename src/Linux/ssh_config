@@ -14,6 +14,7 @@ Host *bstmg.aiam-dh.com
 ForwardAgent yes
 Port 443
 
+# AWS Bastion
 Host *.ap-southeast-2.compute.internal
 ProxyCommand ssh sytmg.aiam-dh.com -W %h:%p
 
