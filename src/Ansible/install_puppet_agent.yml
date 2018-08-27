@@ -14,6 +14,7 @@
         - name: Append puppet slave IP to puppet.conf
           lineinfile:
               dest=/etc/puppetlabs/puppet/puppet.conf
+              #frankfurt,11.0.54.71
               line="server={{ lookup('csvfile', '{{region}} file=puppet_lookup.csv delimiter=, col=1') }}"
         - service:
               name: puppet
