@@ -1,4 +1,4 @@
-This repo will contain my work like DevOps
+This repo will contain my work as a DevOps
 ==========================================
 
 **AWS** manipulations and automations.
