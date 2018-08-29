@@ -1,4 +1,4 @@
-# Install Jenkins<a name="install-jenkins"></a>
+# Install Jenkins On RedHat based distributions<a name="install-jenkins"></a>
 
 This guide show how to install Jenkins as a standalone and under Apache Tomcat on CentOS 7\.
 
