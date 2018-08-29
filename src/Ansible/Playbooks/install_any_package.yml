@@ -1,0 +1,17 @@
+--- # Playbook to install a yum package across multiple servers
+- hosts: apacheweb
+  user: test
+  sudo: yes
+  connection: ssh
+  gather_facts: no
+
+  vars:
+    playbook_version: 0.1b
+  vars_prompt:
+    - name: pkg_name
+      prompt: Install Which Package
+
+  tasks:
+    - name: Install the {{ pkg_name }} package
+      action: yum name={{ pkg_name }} state=installed
+
