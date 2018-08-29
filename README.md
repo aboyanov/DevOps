@@ -5,6 +5,6 @@ This repo will contain my work as a DevOps
 
 **Ansible** playbooks.
 
-Simple **Python** scripts.
+**Python** scripts.
 
 **Linux** Tips & How-tos.
