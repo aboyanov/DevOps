@@ -1,4 +1,4 @@
-This repo will contain my work as a DevOps
+This repository contains DevOps related scripts, tips etc..
 ==========================================
 
 **AWS** Manipulations and Automations.
