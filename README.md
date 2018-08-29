@@ -1,10 +1,12 @@
 This repo will contain my work as a DevOps
 ==========================================
 
-**AWS** manipulations and automations.
+**AWS** Manipulations and Automations.
 
-**Ansible** playbooks.
+**Ansible** Playbooks.
 
-**Python** scripts.
+**Python** Scripts.
+
+**Bash** Automations
 
 **Linux** Tips & How-tos.
