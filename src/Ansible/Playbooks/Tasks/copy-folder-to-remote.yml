@@ -1,0 +1,11 @@
+---
+- hosts: all
+    
+  tasks:
+
+  - name: Ansible copy directory to remote server
+    copy:
+      src: /var/tmp/dxc_tools
+      dest: /var/tmp
+#      owner: tuser
+#      group: user1

@@ -1,0 +1,7 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Install subscription manager
+    command: eds-linux-patch -asi -p subscription-manager

@@ -1,0 +1,10 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Extrack and install OSIT tool
+    unarchive:
+      src: /var/tmp/dxc_tools/osit-toolset-linux-3.0-419.tar.gz
+      dest: /
+      remote_src: yes

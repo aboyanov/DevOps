@@ -1,0 +1,31 @@
+---
+- hosts: all
+# become: yes
+#  vars:
+#    created with:
+#    python -c 'import crypt; print crypt.crypt("This is my Password", "user123")'
+#    password: us5Wbrdm5GDLE
+
+  tasks:
+  
+  - name: Make sure we have a 'opsgroup' group
+    group:
+      name: opsgroup
+      state: present
+
+  - name: Allow 'opsgroup' group to have passwordless sudo
+    lineinfile:
+      dest: /etc/sudoers
+      state: present
+      regexp: '^%opsgroup'
+      line: '%opsgroup ALL=(ALL) NOPASSWD: ALL'
+      validate: 'visudo -cf %s'
+
+  - name: Add sudoers users to opsgroup group
+    user: name=devops groups=opsgroup append=yes state=present createhome=yes
+
+
+  - name: Set up authorized keys for the devops user
+    authorized_key: user=devops
+                    key="{{ lookup('file', '/home/hptrstov/.ssh/id_rsa.pub') }}"
+                    state=present

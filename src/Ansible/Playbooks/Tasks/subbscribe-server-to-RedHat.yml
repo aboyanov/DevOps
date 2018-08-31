@@ -1,0 +1,13 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Subscribe server to RedHat network via subscription-manager
+    redhat_subscription:
+      state: present
+      username: RedHat@PhoenixGroup
+      password: Ph03n1xR3dH@t
+      server_proxy_hostname: inetproxy.phoenix.loc
+      server_proxy_port: 8080
+      autosubscribe: true

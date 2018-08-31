@@ -1,0 +1,16 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Edit rhsm.conf file to desired configuration - proxy
+    lineinfile:
+      path: /etc/rhsm/rhsm.conf
+      regexp: '^proxy_hostname ='
+      line: 'proxy_hostname = inetproxy.phoenix.loc'
+
+  - name: Edit rhsm.conf file to desired configuration - port
+    lineinfile:
+      path: /etc/rhsm/rhsm.conf
+      regexp: '^proxy_port ='
+      line: 'proxy_port = 8080'

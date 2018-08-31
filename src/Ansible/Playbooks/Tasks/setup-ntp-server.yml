@@ -1,0 +1,33 @@
+---
+- hosts: all
+#  become: true
+#  become_user: root
+#  become_method: su
+
+  tasks:
+
+  - name: Stop NTP service
+    service:
+      name: ntpd
+      state: stopped
+
+  - name: Remove false NTP servers
+    lineinfile:
+      path: /etc/ntp.conf 
+      state: absent
+      regexp: "{{ item }}"
+    with_items:
+      - 205.191.22.78
+      - 205.191.69.78
+
+  - name: Setup correct NTP server
+    replace:
+      path: /etc/ntp.conf 
+      regexp: '205.191.24.78'
+      replace: '10.103.111.23'
+      backup: yes
+
+  - name: Start NTP service
+    service:
+      name: ntpd
+      state: started

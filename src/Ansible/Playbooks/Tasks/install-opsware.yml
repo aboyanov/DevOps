@@ -1,0 +1,18 @@
+---
+- hosts: all
+
+  tasks:
+
+#  - name: Make opsware script executable
+#
+#    file:
+#      path: /var/tmp/dxc_tools/opsware-agent-60.0.64851.2-linux-7SERVER-X86_64
+#      owner: tuser
+#      group: user1
+#      mode: 0777
+
+  - name: Install opsware
+    command: sh "/var/tmp/opsagt/opsware-agent-60.0.73283.4-linux-7SERVER-X86_6" --opsw_gw_addr 10.156.119.141:3001 --force_full_hw_reg
+    register: out
+
+  - debug: var=out.stdout_lines

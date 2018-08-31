@@ -1,0 +1,17 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Unarchive OVO tar.gz file
+    unarchive:
+      src: /var/tmp/dxc_tools/HPOA_11.14_Linux_64-v6.tar.gz
+      dest: /var/tmp/dxc_tools
+      remote_src: yes
+
+  - name: Install OVO manager
+    command:
+      sh "/var/tmp/dxc_tools/HPOA_11/root_task" asd
+    register: out
+
+  - debug: var=out.stdout_lines

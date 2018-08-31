@@ -1,0 +1,34 @@
+---
+- name: connection test
+  hosts: all
+  become: no
+  gather_facts: no
+
+  tasks:
+
+  - name: Check HPSA port is opened
+    wait_for:
+      host: "{{ hpsa_host }}"
+      port: "{{ hpsa_port }}"
+      state: started        # Port should be opened
+      delay: 0              # No wait before first check
+      timeout: 4            # Stop checking after timeout (sec)
+    ignore_errors: yes
+
+  - name: Check HPOM(OVO) port is opened
+    wait_for:
+      host: "{{ ovo_host}}"
+      port: "{{ ovo_port}}"
+      state: started        # Port should be opened
+      delay: 0              # No wait before first check
+      timeout: 4            # Stop checking after timeout (sec)
+    ignore_errors: yes
+
+  - name: Check ESM/CCS port is opened
+    wait_for:
+      host: "{{ ccs_host }}"
+      port: "{{ ccs_port }}"
+      state: started       # Port should be opened
+      delay: 0             # No wait before first check
+      timeout: 4           # Stop checking after timeout (sec)
+    ignore_errors: yes

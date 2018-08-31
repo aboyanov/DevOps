@@ -1,0 +1,15 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Install DDMI tool
+    yum: name=/var/tmp/dxc_tools/ddmi-installer-linux-1.0-1.noarch.rpm state=present
+
+
+  - name: Run post script DDMI installation
+    command:
+      sh "/opt/hps/inventory/bin/post_install.sh"
+    register: out
+
+  - debug: var=out.stdout_lines

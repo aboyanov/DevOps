@@ -1,0 +1,18 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Unarchive CCS tar.gz file
+    unarchive:
+      src: /var/tmp/dxc_tools/ccs11-linux-intel-agent.tgz
+      dest: /var/tmp/dxc_tools
+      remote_src: yes
+
+  - name: Install CCS tool
+    command:
+      sh "/var/tmp/dxc_tools/esm110/esmsetup" -a -p 1,2,3,4,5,6,7,8,9,11,13,14 -d /opt/esm -u root -g sys -t /var/tmp/dxc_tools/esm110/esm.tgz -M {FQDN of CCS manager} -O 5600 -U AG3NT -W r3g@g3nt -N {FQDN of CCS agent being registered} -b
+    register: out
+
+  - debug: var=out.stdout_lines
+

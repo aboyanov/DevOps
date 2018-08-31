@@ -1,0 +1,9 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Update server with yum
+    yum:
+      name: '*'
+      state: latest

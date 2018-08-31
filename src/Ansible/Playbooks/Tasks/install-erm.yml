@@ -1,0 +1,7 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Install ERM tool
+    yum: name=/var/tmp/dxc_tools/erm-client-3.11-02.x86_64.rpm state=present

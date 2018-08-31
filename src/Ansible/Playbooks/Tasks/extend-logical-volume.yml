@@ -1,0 +1,30 @@
+---
+- hosts: all
+
+#  vars:
+#    volumes:
+#      { name: "vg00-homevol, extend: +100M" }
+#      { name: "vg00-varvol, extend: +100M" }
+#      { name: "vg00-tmpvol, extend: +100M" }
+#
+#  tasks:
+#
+#  - name: Extend the logical volumes of server to recommended size
+#    command: lvresize -r -L{{ item.extend}} /dev/mapper/{{ item.name }}
+#    with_items:
+#     - "{{ volumes }}"
+
+
+  tasks:
+
+  - name: Extend logical volume to preffered size
+    command:
+      lvresize -r -L+770M /dev/mapper/vg00-homevol
+
+  - name: Extend logical volume to preffered size
+    command:
+      lvresize -r -L+3G /dev/mapper/vg00-varvol
+
+  - name: Extend logical volume to preffered size
+    command:
+      lvresize -r -L+3G /dev/mapper/vg00-varvol

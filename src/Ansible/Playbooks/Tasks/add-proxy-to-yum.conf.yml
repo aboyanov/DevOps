@@ -1,0 +1,9 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Add proxy into /etc/yum.conf file
+    lineinfile:
+      path: /etc/yum.conf
+      line: 'proxy=http://inetproxy.phoenix.loc:8080'

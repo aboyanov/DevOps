@@ -1,0 +1,8 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Set time zone
+    timezone:
+      name: Europe/Berlin

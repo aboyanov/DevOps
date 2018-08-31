@@ -1,0 +1,14 @@
+---
+- hosts: all
+#  become: true 
+#  become_method: sudo
+#  become_user: root
+#  gather_facts: no
+#  remote_user: hptrstov
+
+  tasks:
+
+  - name: install ssh key to remote target machine
+    authorized_key: user=hptrstov
+                    key="{{ lookup('file', '/home/hptrstov/.ssh/id_rsa.pub') }}"
+                    state=present

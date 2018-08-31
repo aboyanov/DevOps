@@ -1,0 +1,15 @@
+---
+- hosts: all
+
+  tasks:
+
+
+  - name: Run command as root user
+    command: id
+    become: true
+    become_user: root
+    become_method: su
+#    become_flags: '-s /bin/sh'
+    register: out
+
+  - debug: var=out.stdout_lines

@@ -1,0 +1,11 @@
+---
+- hosts: all
+  gather_facts: no
+  remote_user: root
+
+  tasks:
+
+  - name: install ssh key to remote target machine
+    authorized_key: user=root
+                    key="{{ lookup('file', '/home/hptrstov/.ssh/id_rsa.pub') }}"
+                    state=present

@@ -1,0 +1,17 @@
+---
+- hosts: all
+
+  tasks:
+ 
+  - name: Make sample.sh script executable
+    file:
+      path: /var/tmp/dxc_tools/sample.sh
+      owner: tuser
+      group: user1
+      mode: 0777
+
+  - name: Run test script to validate opsware will be installed with proper agruments
+    command: sh "/var/tmp/dxc_tools/sample.sh" --prod
+    register: out
+
+  - debug: var=out.stdout_lines

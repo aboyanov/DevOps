@@ -1,0 +1,15 @@
+---
+- hosts: all
+
+  tasks:
+
+  - name: Stop NTP service
+    service:
+      name: ntpd
+      state: stopped
+
+
+  - name: Start NTP service
+    service:
+      name: ntpd
+      state: started

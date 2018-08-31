@@ -1,0 +1,16 @@
+---
+- hosts: all
+  gather_facts: True
+
+
+  tasks:
+  - debug:
+      var: hostvars[inventory_hostname]
+
+  - name: Add entry in /etc/hosts for server
+    lineinfile:
+      path: /etc/hosts
+      regexp: '.*{{ hostvars[inventory_hostname].ansible_fqdn }}$'
+      line: "{{ hostvars[inventory_hostname].ansible_default_ipv4.address }}         {{ hostvars[inventory_hostname].ansible_fqdn }} {{ hostvars[inventory_hostname].ansible_hostname }}"
+      state: present
+    when: hostvars[inventory_hostname].ansible_default_ipv4.address is defined
