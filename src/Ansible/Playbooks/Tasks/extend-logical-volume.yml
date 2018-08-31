@@ -18,13 +18,10 @@
   tasks:
 
   - name: Extend logical volume to preffered size
-    command:
-      lvresize -r -L+770M /dev/mapper/vg00-homevol
+    command: lvresize -r -L+770M /dev/mapper/vg00-homevol
 
   - name: Extend logical volume to preffered size
-    command:
-      lvresize -r -L+3G /dev/mapper/vg00-varvol
+    command: lvresize -r -L+3G /dev/mapper/vg00-varvol
 
   - name: Extend logical volume to preffered size
-    command:
-      lvresize -r -L+3G /dev/mapper/vg00-varvol
+    command: lvresize -r -L+3G /dev/mapper/vg00-varvol
