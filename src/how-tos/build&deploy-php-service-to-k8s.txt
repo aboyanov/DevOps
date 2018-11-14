@@ -1,0 +1,37 @@
+Build and deploy the PHP:
+
+#Install PHP version 7.0.32
+yum install http://rpms.remirepo.net/enterprise/remi-release-7.rpm
+yum install yum-utils
+yum-config-manager --enable remi-php70
+yum update
+
+#Install composer if it is not installed
+yum install -y composer
+
+#Install nodejs
+rpm -Uvh https://rpm.nodesource.com/pub_5.x/el/7/x86_64/nodesource-release-el7-1.noarch.rpm
+yum install nodejs
+
+#Build
+php vendor/bin/phing -f build.xml _build_all
+
+#Note: the composer uses OAuth credentials with name 'PHP-Composer-Auth' under 'Invest' account, you can find thme in 'Bitbucket settings' -> 'OAuth'
+#under 'OAuth consumers', so if the job will be used in another machine.The first time execute the 'composer install' manually and add them when prompted
+#they will be stored then for further usage.
+
+#Build with composer
+composer install
+
+#Build and tag the image -> $imageRepo:$imageVersion
+docker build -t 103293740570.dkr.ecr.eu-west-1.amazonaws.com/exchange/php:v_0.1 .
+
+# Auth to the AWS Docker Registry
+$(/usr/local/bin/aws ecr get-login --no-include-email)
+
+#Push the image to the AWS Registry -> $imageRepo:$imageVersion
+docker push 103293740570.dkr.ecr.eu-west-1.amazonaws.com/exchange/php:v_0.1
+
+#Deploy to Kubernetes
+kubectl -n exchange delete deploy php-service
+kubectl apply -f php-service.yaml
