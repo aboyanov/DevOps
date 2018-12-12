@@ -1,3 +1,4 @@
+# files ~/.ssh/config and /etc/ssh/ssh_config
 # modify the two lines under Host * with your personal setting. e.g.:
 # e.g.: IdentityFile /home/user/.ssh/private_key_name
 # e.g.: User john.doy
